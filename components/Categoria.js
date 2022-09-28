@@ -2,7 +2,7 @@ import Image from "next/image";
 import useQuiosco from "../hooks/useQuiosco";
 
 const Categoria = ({ categoria }) => {
-  const { categoriaActual, handleClickCategoria } = useQuiosco();
+  const { categoriaActual, getProductsPerCategory } = useQuiosco();
 
   const { nombre, icono, id } = categoria;
   return (
@@ -21,7 +21,7 @@ const Categoria = ({ categoria }) => {
       <button
         type="button"
         className="text-2xl font-bold hover:cursor-pointer"
-        onClick={() => handleClickCategoria(id)}
+        onClick={() => getProductsPerCategory({ category: categoria })}
       >
         {nombre}
       </button>

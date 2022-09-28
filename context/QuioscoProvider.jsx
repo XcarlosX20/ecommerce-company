@@ -8,6 +8,7 @@ const QuioscoContext = createContext()
 
 const QuioscoProvider = ({children}) => {
     const [categorias, setCategorias] = useState([])
+    const [products, setProducts] = useState([])
     const [categoriaActual, setCategoriaActual] = useState({})
     const [producto, setProducto ] = useState({})
     const [modal, setModal] = useState(false)
@@ -17,15 +18,38 @@ const QuioscoProvider = ({children}) => {
 
 
     const router = useRouter()
-
     const obtenerCategorias = async () => {
-        const { data } = await axiosClient('/api/categorias')
-        setCategorias(data)
+        //const { data } = await axiosClient('/api/categorias')
+        setCategorias([
+    {
+        icono: "cafe",
+        nombre: "Café"
+      },
+      {
+        icono: "hamburguesa",
+        nombre: "Hamburguesas"
+      },
+      {
+        icono: "pizza",
+        nombre: "Pizzas"
+      },
+      {
+        icono: "dona",
+        nombre: "Donas"
+      },
+      {
+        icono: "pastel",
+        nombre: "Pasteles"
+      },
+      {
+        icono: "galletas",
+        nombre: "Galletas"
+      }
+])
     }
     useEffect(() => {
         obtenerCategorias()
     }, [])
-
     useEffect(() => {
         setCategoriaActual(categorias[0])
     }, [categorias])
@@ -36,12 +60,12 @@ const QuioscoProvider = ({children}) => {
         setTotal(nuevoTotal)
     }, [pedido])
 
-    const handleClickCategoria = id => {
-        const categoria = categorias.filter( cat => cat.id === id )
-        setCategoriaActual(categoria[0])
-        router.push('/')
+    const getProductsPerCategory = async ({category}) => {
+        const products = [{ nombre: 'a', imagen: 'img', precio:"12", category: 'Café' },
+    { nombre: 'b', imagen: 'imgb', precio:"132", category: 'Hamburguesas' },{ nombre: 'ba', imagen: 'imgB', precio:"112", category: 'Pizzas' }]
+        setProducts(products.filter(i => (i.category === category.nombre)))
+         router.push('/')
     }
-
     const handleSetProducto = producto => {
         setProducto(producto)
     }
@@ -105,8 +129,9 @@ const QuioscoProvider = ({children}) => {
         <QuioscoContext.Provider
             value={{
                 categorias,
+                products,
                 categoriaActual,
-                handleClickCategoria,
+                getProductsPerCategory,
                 producto,
                 handleSetProducto,
                 modal, 
