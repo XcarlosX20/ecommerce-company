@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from 'react'
-import axios from 'axios'
+import {axiosClient} from '../axios'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 
@@ -19,7 +19,7 @@ const QuioscoProvider = ({children}) => {
     const router = useRouter()
 
     const obtenerCategorias = async () => {
-        const { data } = await axios('/api/categorias')
+        const { data } = await axiosClient('/api/categorias')
         setCategorias(data)
     }
     useEffect(() => {
@@ -81,7 +81,7 @@ const QuioscoProvider = ({children}) => {
         e.preventDefault();
 
         try {
-            await axios.post('/api/ordenes', {pedido, nombre, total, fecha: Date.now().toString()})
+            await axiosClient.post('/api/ordenes', {pedido, nombre, total, fecha: Date.now().toString()})
 
             // Resetear la app
             setCategoriaActual(categorias[0])
