@@ -1,32 +1,25 @@
-import Image from "next/image";
-import useQuiosco from "../hooks/useQuiosco";
-
-const Categoria = ({ categoria }) => {
-  const { categoriaActual, getProductsPerCategory } = useQuiosco();
-
-  const { nombre, icono, id } = categoria;
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import useQuiosco from '../hooks/useQuiosco'
+const Categoria = ({ category, query }) => {
+  const router = useRouter()
+  const { categoriaActual, setCategoriaActual } = useQuiosco()
+  // const { nombre, icono, id } = categoria;
   return (
-    <div
+    <button
+      onClick={() => {
+        router.push(`/categories/${category}`)
+        setCategoriaActual(category)
+      }}
       className={`${
-        categoriaActual?.id === id ? "bg-amber-400" : ""
-      } flex items-center gap-4 w-full border p-5 hover:bg-amber-400`}
+        categoriaActual === category || query.category === category
+          ? 'bg-amber-400'
+          : ''
+      } flex items-center gap-4 w-full border p-5 hover:bg-amber-400 text-2xl font-bold hover:cursor-pointer`}
     >
-      <Image
-        width={70}
-        height={70}
-        src={`/assets/img/icono_${icono}.svg`}
-        alt="Imagen Icono"
-      />
+      {category}
+    </button>
+  )
+}
 
-      <button
-        type="button"
-        className="text-2xl font-bold hover:cursor-pointer"
-        onClick={() => getProductsPerCategory({ category: categoria })}
-      >
-        {nombre}
-      </button>
-    </div>
-  );
-};
-
-export default Categoria;
+export default Categoria
