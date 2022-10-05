@@ -2,14 +2,14 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { slug } from '../helpers'
 import useQuiosco from '../hooks/useQuiosco'
-const Categoria = ({ category, query }) => {
-  const router = useRouter()
+const Categoria = ({ category }) => {
+  const { push, query } = useRouter()
   const { categoriaActual, setCategoriaActual } = useQuiosco()
   // const { nombre, icono, id } = categoria;
   return (
     <button
       onClick={() => {
-        router.push(`/categories/${slug(category)}`)
+        push(`/categories/${slug(category)}`)
         setCategoriaActual(category)
       }}
       className={`${
