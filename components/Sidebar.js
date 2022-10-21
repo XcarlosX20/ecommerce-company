@@ -18,6 +18,7 @@ const Sidebar = () => {
         </Link>
       </div>
       <nav className='mt-10'>
+        <p className='text-uppercase text-xl ml-2 font-black'>Categories</p>
         {InfoCompany?.categories?.map((category) => (
           <Categoria key={category} category={category} />
         ))}

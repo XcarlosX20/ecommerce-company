@@ -5,14 +5,16 @@ import QuioscoContext from '../context/QuioscoProvider'
 const useSchedule = () => {
   const [companyOpen, setCompanyOpen] = useState('')
   const {
-    InfoCompany: { companyName, workdays, workTime }
+    InfoCompany: { workdays, workTime }
   } = useContext(QuioscoContext)
 
   const checkSchedule = (workdays, workTime) => {
-    const date = new Date()
-    const hoy = new Date(Date.now())
     const dayToday = moment().format('dddd')
-    if (workdays.indexOf(dayToday) >= 0) {
+    const getCurrentHour = moment().hour('HH:mm')
+    const startDate = moment(workTime[0], 'HH:mm')
+    const endDate = moment(workTime[1], 'HH:mm')
+    const checkHours = moment(getCurrentHour).isBetween(startDate, endDate)
+    if (workdays.indexOf(dayToday) >= 0 && checkHours) {
       setCompanyOpen('open')
     } else {
       setCompanyOpen('closed')

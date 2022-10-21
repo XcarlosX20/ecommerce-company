@@ -94,10 +94,26 @@ const QuioscoProvider = ({ children }) => {
     e.preventDefault()
 
     try {
-      await axiosClient.post('/api/ordenes', { pedido, nombre, total, fecha: Date.now().toString() })
+      const data = {
+        bag: pedido,
+        dataBuyer: {
+          ci: 'V-6285174',
+          nombre,
+          banco: {
+            code: '0108',
+            name: 'Provincial'
+          },
+          tlf: '04246206123',
+          correo: 'john@mail.com'
+        },
+        amount: total,
+        date: Date.now(),
+        number_proof_payment: '8912721'
+      }
+      await axiosClient.post('/api/requests/companies/632d30f27fb46013ddce70c0', data)
 
       // Resetear la app
-      setCategoriaActual(InfoCompany[0])
+      setCategoriaActual('')
       setPedido([])
       setNombre('')
       setTotal(0)

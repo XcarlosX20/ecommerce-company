@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { slug } from '../helpers'
 import useQuiosco from '../hooks/useQuiosco'
 const Categoria = ({ category }) => {
+  console.log(category)
   const { push, query } = useRouter()
   const { categoriaActual, setCategoriaActual } = useQuiosco()
   // const { nombre, icono, id } = categoria;

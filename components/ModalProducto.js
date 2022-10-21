@@ -20,11 +20,11 @@ const ModalProducto = () => {
   }, [producto, pedido])
 
   return (
-    <div className='md:flex gap-10'>
+    <div className='md:flex gap-10 '>
       <div className='md:w-1/3'>
         <Image
           width={300}
-          height={400}
+          height={300}
           unoptimized
           loader={() => producto.img}
           alt={`imagen producto ${producto.productname}`}
