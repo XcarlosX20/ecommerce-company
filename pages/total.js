@@ -2,10 +2,12 @@ import { useEffect, useCallback } from "react";
 import Layout from "../layout/Layout";
 import useQuiosco from "../hooks/useQuiosco";
 import { formatearDinero } from "../helpers";
+import Delivery from "../components/paySection/Delivery";
 
 export default function Total() {
-  const { pedido, nombre, setNombre, colocarOrden, total } = useQuiosco();
-
+  const { pedido, nombre, setNombre, colocarOrden, total, usdToBs } =
+    useQuiosco();
+  console.log(total, usdToBs);
   const comprobarPedido = useCallback(() => {
     return pedido.length === 0 || nombre === "" || nombre.length < 3;
   }, [pedido, nombre]);
@@ -51,6 +53,7 @@ export default function Total() {
             value=""
           />
         </div>
+        <Delivery />
         <div>
           <label
             htmlFor="details"
@@ -97,8 +100,10 @@ export default function Total() {
 
         <div className="mt-10">
           <p className="text-2xl">
-            Total a pagar: {""}{" "}
+            Total a pagar:{" "}
             <span className="font-bold">{formatearDinero(total)}</span>
+            {" | "}
+            <span className="font-light">{Number(usdToBs * total)}Bs</span>
           </p>
         </div>
 

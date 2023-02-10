@@ -2,10 +2,12 @@ import { useState, useEffect, createContext } from 'react'
 import { axiosClient } from '../axios'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
+import { getValuationUSDVE } from '../helpers'
 
 const QuioscoContext = createContext()
 
 const QuioscoProvider = ({ children }) => {
+  const [usdToBs, setusdToBs] = useState(0)
   const [InfoCompany, setInfoCompany] = useState({})
   const [products, setProducts] = useState([])
   const [categoriaActual, setCategoriaActual] = useState('')
@@ -15,7 +17,7 @@ const QuioscoProvider = ({ children }) => {
   const [nombre, setNombre] = useState('')
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
-
+  const [addressCustomer, setAddressCustomer] = useState('')
   const router = useRouter()
   const getInfoCompany = async (query) => {
     try {
@@ -45,7 +47,12 @@ const QuioscoProvider = ({ children }) => {
     }
   }
   useEffect(() => {
-    getInfoCompany('all')
+      const fn =async () => {
+        const currentUsdPrice = await getValuationUSDVE()
+        setusdToBs(currentUsdPrice)
+      }
+      fn()
+      getInfoCompany('all')
   }, [])
   useEffect(() => {
     if (categoriaActual) {
@@ -63,8 +70,7 @@ const QuioscoProvider = ({ children }) => {
 
   const handleChangeModal = () => {
     setModal(!modal)
-  }
-
+  } 
   const handleAgregarPedido = ({ category, ...producto }) => {
     if (pedido.some(productoState => productoState._id === producto._id)) {
       // Actualizar la cantidad
@@ -130,6 +136,7 @@ const QuioscoProvider = ({ children }) => {
   return (
     <QuioscoContext.Provider
       value={{
+        usdToBs,
         InfoCompany,
         setCategoriaActual,
         products,
@@ -147,7 +154,8 @@ const QuioscoProvider = ({ children }) => {
         setNombre,
         colocarOrden,
         total,
-        loading
+        loading,
+        addressCustomer, setAddressCustomer
       }}
     >
       {children}
