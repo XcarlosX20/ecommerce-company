@@ -28,7 +28,7 @@ Modal.setAppElement("#__next");
 
 export default function Layout({ children, pagina }) {
   const router = useRouter();
-
+  const sideBar = ["/resumen", "/total"].indexOf(router.pathname) === -1;
   const {
     modal,
     InfoCompany: { companyName },
@@ -47,13 +47,13 @@ export default function Layout({ children, pagina }) {
           <Pasos />
         </div>
       </header>
-      <div className="flex flex-col xl:flex-row pt-20">
-        {["/resumen", "/total"].indexOf(router.pathname) === -1 && (
+      <div className="flex w-100 flex-col xl:flex-row pt-20">
+        {sideBar && (
           <aside className="xl:w-1/4 2xl:w-1/5">
             <Sidebar />
           </aside>
         )}
-        <div className="xl:w-3/4 2xl:w-4/5">
+        <div className={`${!sideBar && "w-full"}`}>
           <main className="p-10 h-screen  ">
             {companyOpen === "closed" && <div>Alert</div>}
             {children}
