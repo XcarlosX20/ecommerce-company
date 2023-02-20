@@ -7,3 +7,22 @@
     transition-property: width ;
     transition-duration: 300ms;
 }
+.absolutex{
+    transition: all ease .5s;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    font-weight: bold;
+    padding: 1rem;
+}
+.absolutex:hover{
+    background-color: rgba(0, 0, 0, 0.920);
+    color: #fff;
+}

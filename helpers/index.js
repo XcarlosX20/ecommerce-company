@@ -19,6 +19,10 @@ export const dislug = (str) => {
   }
   return words.join(" ");
 };
+export const formatKeys = (str) => {
+  const transform = str.replace(/([A-Z])/g, " $1").toLowerCase();
+  return str.charAt(0).toUpperCase() + transform.slice(1);
+};
 export const getValuationUSDVE = async () => {
   const response = await axios.get(usdToBs);
   return response.data.USD.promedio_real;

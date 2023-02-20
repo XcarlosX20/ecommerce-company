@@ -3,6 +3,7 @@ import Layout from "../layout/Layout";
 import useQuiosco from "../hooks/useQuiosco";
 import { formatearDinero } from "../helpers";
 import Delivery from "../components/paySection/Delivery";
+import PayMethods from "../components/paySection/PayMethods";
 
 export default function Total() {
   const { pedido, nombre, setNombre, colocarOrden, total, usdToBs } =
@@ -33,7 +34,7 @@ export default function Total() {
           <input
             id="nombre"
             type="text"
-            className="bg-gray-200 w-1/5 lg:w-1/3 mt-3 p-2 rounded-md"
+            className="bg-gray-200 w-full lg:w-1/3 mt-3 p-2 rounded-md"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
           />
@@ -50,7 +51,7 @@ export default function Total() {
             id="details"
             type="text"
             placeholder="numero de telefono"
-            className="bg-gray-200 w-1/5 lg:w-1/3 mt-3 p-2 rounded-md"
+            className="bg-gray-200 w-full lg:w-1/3 mt-3 p-2 rounded-md"
           />
         </div>
         <div>
@@ -71,32 +72,24 @@ export default function Total() {
         <Delivery />
         <div className="my-2">
           <p class="block text-slate-800 font-bold text-xl">
-            Realiza una transferencia de mismo banco o pago movil a:
+            Seleccione su metodo de pago:
           </p>
-          <div
-            id="alert-border-1"
-            class="flex p-4 mb-4 bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded"
-            role="alert"
-          >
-            <p class="block uppercase text-slate-800 font-bold text-xl">
-              {"[Datos de la Empresa] "}
-            </p>
-          </div>
+          <PayMethods />
         </div>
         <div className="my-2">
-          <label className="block text-slate-800 font-bold text-xl">
-            ...y luego envianos el comprobante o ingresa los ultimos 6 digitos
-            de identificacion de la transaccion
-          </label>
-          <span className="text-sm">
-            suba la imagen o ingrese el id del recibo
-          </span>
+          <h3 className="block text-slate-800 font-bold text-xl">
+            Realiza la transaccion a la cuenta que seleccionaste y envianos el
+            comprobante de pago.
+          </h3>
+          <p className="text-sm mb-2">
+            Puedes enviarnos una captura o los ultimos 6 de digitos de su
+            identificacion.
+          </p>
 
-          <span className="sr-only">Choose profile photo</span>
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-col md:flex-row lg:flex-row gap-2">
             <input
               placeholder="id del recibo"
-              className="bg-gray-200 w-1/5 md:w-1/3 p-2 rounded-md"
+              className="bg-gray-200 w-full md:w-1/5 p-2 rounded-md"
             />
             <label className="block">
               <input
@@ -113,7 +106,7 @@ export default function Total() {
           </div>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-5">
           <p className="text-2xl">
             Total a pagar:{" "}
             <span className="font-bold">{formatearDinero(total)}</span>
@@ -134,7 +127,7 @@ export default function Total() {
               comprobarPedido()
                 ? "bg-indigo-100"
                 : "bg-indigo-600 hover:bg-indigo-800"
-            }  w-1/5 lg:w-auto px-5 py-2 rounded uppercase font-bold text-white text-center`}
+            }  w-full lg:w-1/5 px-5 py-2 rounded uppercase font-bold text-white text-center`}
             value="Confirmar Pedido"
             disabled={comprobarPedido()}
           />
