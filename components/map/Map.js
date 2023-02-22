@@ -76,7 +76,7 @@ export default function Map() {
       <p className="block uppercase text-slate-800 font-bold text-xl">
         Marca tu ubicacion
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 z-10 ">
         <div>
           <MapContainer center={center} zoom={12} style={{ height: "15rem" }}>
             <TileLayer

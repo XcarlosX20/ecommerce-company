@@ -1,9 +1,9 @@
 import Image from "next/image";
-import React from "react";
 import { formatKeys } from "../../helpers";
-import useSelectOption from "../../hooks/useSelectOption";
+import useTotal from "../../hooks/useTotal";
 const PayMethods = () => {
-  const { option, fillBox, chooseOption } = useSelectOption();
+  const { metodoPago, dispatch } = useTotal();
+  console.log(metodoPago);
   const optionMethods = [
     {
       name: "Banco de Venezuela (Pago Movil)",
@@ -43,25 +43,28 @@ const PayMethods = () => {
         {optionMethods.length &&
           optionMethods.map((i) => (
             <div
-              onClick={() => chooseOption(i)}
+              onClick={() => dispatch({ type: "SET_METHOD_PAY", payload: i })}
               className={`${
-                fillBox(i.id) && "bg-gray-300"
+                metodoPago.id === i.id && "bg-gray-300"
               } rounded-lg shadow-lg cursor-pointer flex flex-col `}
             >
-              <div className="grow .bg-slate-100 max-h-20">
-                <img
+              <div className="my-0 mx-auto max-w-full max-h-full">
+                <Image
+                  width={"100%"}
+                  height={"100%"}
+                  loader={() => i.imgUrl}
                   src={i.imgUrl}
-                  alt="Image"
-                  className="w-full h-full object-contain"
+                  alt={i.name}
+                  className="object-contain"
                 />
               </div>
-              <div className="p-3">
+              <div className="px-3 pb-2">
                 <p className="font-bold ">{i.name}</p>
               </div>
             </div>
           ))}
       </div>
-      {option.id && (
+      {metodoPago.id && (
         <div
           id="alert-border-1"
           class="p-4 my-3 bg-blue-100 border-l-4 border-blue-500 text-blue-700 rounded"
@@ -69,16 +72,16 @@ const PayMethods = () => {
         >
           <div className="flex flex-col">
             <h3 className="block uppercase text-slate-800 font-bold text-xl">
-              {option.name}
+              {metodoPago.name}
             </h3>
             <div className="overflow-x-auto">
-              {Object.keys(option).map(
+              {Object.keys(metodoPago).map(
                 (item) =>
                   item !== "name" &&
                   item !== "id" &&
                   item !== "imgUrl" && (
                     <p className="text-slate-800 ">
-                      {formatKeys(item)}: {option[item]}
+                      {formatKeys(item)}: {metodoPago[item]}
                     </p>
                   )
               )}

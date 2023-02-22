@@ -4,14 +4,27 @@ import useQuiosco from "../hooks/useQuiosco";
 import { formatearDinero } from "../helpers";
 import Delivery from "../components/paySection/Delivery";
 import PayMethods from "../components/paySection/PayMethods";
+import useTotal from "../hooks/useTotal";
+import Image from "next/image";
+import useSchedule from "../hooks/useSchedule";
 
 export default function Total() {
-  const { pedido, nombre, setNombre, colocarOrden, total, usdToBs } =
-    useQuiosco();
-  console.log(total, usdToBs);
+  const { colocarOrden, usdToBs, pedido, total } = useQuiosco();
+  const { nombre, telefono, details, proof, dispatch, delivery, metodoPago } =
+    useTotal();
+  const { companyOpen } = useSchedule();
   const comprobarPedido = useCallback(() => {
-    return pedido.length === 0 || nombre === "" || nombre.length < 3;
-  }, [pedido, nombre]);
+    return (
+      pedido.length === 0 ||
+      nombre === "" ||
+      nombre.length < 3 ||
+      telefono.length === 0 ||
+      delivery === null ||
+      !Object.keys(metodoPago).length ||
+      (!proof.proofImg && !proof.proofRef) ||
+      companyOpen === "closed"
+    );
+  }, [pedido, nombre, telefono, delivery, metodoPago, proof, companyOpen]);
 
   useEffect(() => {
     comprobarPedido();
@@ -36,7 +49,12 @@ export default function Total() {
             type="text"
             className="bg-gray-200 w-full lg:w-1/3 mt-3 p-2 rounded-md"
             value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+            onChange={(e) =>
+              dispatch({
+                type: "SET_PROP",
+                payload: { key: e.target.id, value: e.target.value },
+              })
+            }
           />
         </div>
         <div>
@@ -48,10 +66,17 @@ export default function Total() {
           </label>
 
           <input
-            id="details"
+            id="telefono"
             type="text"
             placeholder="numero de telefono"
             className="bg-gray-200 w-full lg:w-1/3 mt-3 p-2 rounded-md"
+            value={telefono}
+            onChange={(e) =>
+              dispatch({
+                type: "SET_PROP",
+                payload: { key: e.target.id, value: e.target.value },
+              })
+            }
           />
         </div>
         <div>
@@ -66,7 +91,13 @@ export default function Total() {
             id="details"
             type="text"
             className="bg-gray-200 w-full lg:w-1/3 mt-3 p-2 rounded-md"
-            value=""
+            value={details}
+            onChange={(e) =>
+              dispatch({
+                type: "SET_PROP",
+                payload: { key: e.target.id, value: e.target.value },
+              })
+            }
           />
         </div>
         <Delivery />
@@ -82,30 +113,65 @@ export default function Total() {
             comprobante de pago.
           </h3>
           <p className="text-sm mb-2">
-            Puedes enviarnos una captura o los ultimos 6 de digitos de su
-            identificacion.
+            Puedes subir una captura o escribir los ultimos 6 de digitos de
+            refenrencia
           </p>
 
-          <div className="flex flex-col md:flex-row lg:flex-row gap-2">
-            <input
-              placeholder="id del recibo"
-              className="bg-gray-200 w-full md:w-1/5 p-2 rounded-md"
-            />
-            <label className="block">
-              <input
-                type="file"
-                className="block w-full text-sm text-slate-500
+          <div className="flex flex-col md:flex-row lg:flex-row gap-4 justify-center ">
+            <div className="flex flex-col justify-center align-center">
+              <div className="flex flex-col gap-2">
+                <label className="block">
+                  <input
+                    id="proofImg"
+                    type="file"
+                    accept="image/*,.pdf,.doc,.docx"
+                    className="block w-full text-sm text-slate-500
       file:mr-4 file:py-2 file:px-4
       file:rounded-full file:border-0
       file:text-sm file:font-semibold
       file:bg-violet-50 file:text-violet-700
       hover:file:bg-violet-100
     "
-              />
-            </label>
+                    onChange={(e) => {
+                      dispatch({
+                        type: "SET_PROOF_PAY",
+                        payload: {
+                          key: e.target.id,
+                          value: e.target.files[0],
+                        },
+                      });
+                    }}
+                  />
+                </label>
+                <input
+                  id="proofRef"
+                  value={proof?.proofRef}
+                  placeholder="id del recibo"
+                  className="bg-gray-200 w-full md:max-h-10  p-2 rounded-md"
+                  onChange={(e) =>
+                    dispatch({
+                      type: "SET_PROOF_PAY",
+                      payload: {
+                        key: e.target.id,
+                        value: e.target.value,
+                      },
+                    })
+                  }
+                />
+              </div>
+            </div>
+
+            {proof.proofImg && proof.proofImg.type.slice(0, 5) === "image" && (
+              <div className=" max-w-sm h-auto  ">
+                <img
+                  src={URL.createObjectURL(proof.proofImg)}
+                  alt={proof.proofImg.name}
+                  className="object-contain "
+                />
+              </div>
+            )}
           </div>
         </div>
-
         <div className="mt-5">
           <p className="text-2xl">
             Total a pagar:{" "}

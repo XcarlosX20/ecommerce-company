@@ -1,16 +1,22 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import useSelectOption from "../../hooks/useSelectOption";
+import useTotal from "../../hooks/useTotal";
 
 const DynamicMap = dynamic(() => import("../map/Map"), {
   ssr: false,
 });
 const Delivery = () => {
-  const { option, fillBox, chooseOption } = useSelectOption();
+  const { delivery, dispatch } = useTotal();
   const optionsRendering = [
-    { name: "Delivery", id: 1 },
-    { name: "En el establecimiento", id: 2 },
+    { name: "Delivery", id: 1, delivery: true },
+    { name: "En el establecimiento", id: 2, delivery: false },
   ];
+  const setDeliveryFn = (opt) => {
+    dispatch({
+      type: "SET_DELIVERY",
+      payload: opt.name === "Delivery" && true,
+    });
+  };
   return (
     <>
       <p class="font-bold text-xl mb-2">
@@ -21,9 +27,11 @@ const Delivery = () => {
           optionsRendering.map((i) => (
             <div
               id={i.id}
-              onClick={() => chooseOption(i)}
+              onClick={() => {
+                setDeliveryFn(i);
+              }}
               className={`${
-                fillBox(i.id) && "bg-gray-300"
+                i.delivery === delivery ? "bg-gray-300" : null
               } hover:bg-gray-300 shadow border-2 border-gray-300 cursor-pointer px-6 py-4`}
             >
               {i.name}
@@ -31,7 +39,7 @@ const Delivery = () => {
           ))}
       </div>
 
-      {option.name === "Delivery" && <DynamicMap />}
+      {delivery && <DynamicMap />}
     </>
   );
 };

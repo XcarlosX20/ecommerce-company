@@ -42,7 +42,7 @@ export default function Layout({ children, pagina }) {
         </title>
         <meta name="description" content="Quosco Cafetería" />
       </Head>
-      <header className="min-w-full fixed h-20 bg-slate-100 z-10">
+      <header className="min-w-full fixed h-20 bg-slate-100 z-30">
         <div className="container mx-auto">
           <Pasos />
         </div>
