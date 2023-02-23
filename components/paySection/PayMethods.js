@@ -43,6 +43,7 @@ const PayMethods = () => {
         {optionMethods.length &&
           optionMethods.map((i) => (
             <div
+              key={i.id}
               onClick={() => dispatch({ type: "SET_METHOD_PAY", payload: i })}
               className={`${
                 metodoPago.id === i.id && "bg-gray-300"
@@ -67,7 +68,7 @@ const PayMethods = () => {
       {metodoPago.id && (
         <div
           id="alert-border-1"
-          class="p-4 my-3 bg-blue-100 border-l-4 border-blue-500 text-blue-700 rounded"
+          className="p-4 my-3 bg-blue-100 border-l-4 border-blue-500 text-blue-700 rounded"
           role="alert"
         >
           <div className="flex flex-col">

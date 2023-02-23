@@ -19,13 +19,14 @@ const Delivery = () => {
   };
   return (
     <>
-      <p class="font-bold text-xl mb-2">
+      <p className="font-bold text-xl mb-2">
         ¿Como deseas que entreguemos tu pedido?
       </p>
       <div className="grid gap-2  grid-cols-2 ">
         {optionsRendering.length &&
           optionsRendering.map((i) => (
             <div
+              key={i.id}
               id={i.id}
               onClick={() => {
                 setDeliveryFn(i);

@@ -102,7 +102,7 @@ export default function Total() {
         </div>
         <Delivery />
         <div className="my-2">
-          <p class="block text-slate-800 font-bold text-xl">
+          <p className="block text-slate-800 font-bold text-xl">
             Seleccione su metodo de pago:
           </p>
           <PayMethods />
