@@ -81,7 +81,7 @@ const PayMethods = () => {
                   item !== "name" &&
                   item !== "id" &&
                   item !== "imgUrl" && (
-                    <p className="text-slate-800 ">
+                    <p key={item} className="text-slate-800 ">
                       {formatKeys(item)}: {metodoPago[item]}
                     </p>
                   )
